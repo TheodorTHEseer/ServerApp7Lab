@@ -7,12 +7,16 @@ import java.util.ArrayList;
 
 public class logs implements Runnable{
     public static String home = System.getProperty("user.home");
-    public static ArrayList<String> logs;
+    public static ArrayList<String> logs = new ArrayList<>(1000);
 
     @Override
     public void run() {
         try {
-            Thread.sleep(5000);
+            while (true) {
+                logs.add(0, "Start");
+                Thread.sleep(5000);
+                uploadLogs();
+            }
 
         } catch (InterruptedException e) {
             e.printStackTrace();
