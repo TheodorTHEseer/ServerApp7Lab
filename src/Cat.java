@@ -1,6 +1,10 @@
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Cat implements Serializable {
     private final Map <String, String> nameRace = new HashMap<>();
@@ -51,7 +55,80 @@ public class Cat implements Serializable {
                 '}';
     }
 
-    public void store(){
+    public void upload(){
+        try {
+            FileWriter fileWriter = new FileWriter(home + File.separator + "Desktop" + File.separator +
+                    "testGameFolder"+File.separator+ "SettlementBuildings.txt" , true);
+            for (int count =0; count<BuildingsRd.size(); count++) {
+                try {
+                    fileWriter.write(BuildingsRd.get(count).getStringInfo()+":");
+                } catch (Exception exception) {
+
+                }
+            }
+            fileWriter.close();
+        }
+        catch (Exception exception){
+
+        }
+        try {
+            FileWriter fileWriter = new FileWriter(home + File.separator + "Desktop" + File.separator +
+                    "testGameFolder" + File.separator + "SettlementMoney.txt", false);
+            fileWriter.write(String.valueOf(getMoneyValue()));
+            fileWriter.close();
+        }
+        catch (Exception e){
+
+        }
+    }
+    public void download(){
+
+        try {
+            FileReader fileReader = new FileReader(home + File.separator + "Desktop" + File.separator +
+                    "testGameFolder" + File.separator + "SettlementBuildings.txt");
+            Scanner scanner = new Scanner(fileReader);
+            try {
+                String[] stringsBuilds = scanner.nextLine().split(":");
+
+                for (int count=0;count<stringsBuilds.length; count++){
+                    String [] paramsMas = stringsBuilds[count].split(",");
+                    String name = String.valueOf(paramsMas[0]);
+                    int xCord =Integer.parseInt(paramsMas[1]);
+                    int yCord =Integer.parseInt(paramsMas[2]);
+                    Building market = new Market();
+                    Building mine = new Mine();
+                    Building townHall = new TownHall();
+                    if (name.equals("[\u001B[36mMark\u001B[0m]")){
+                        market.setCord(xCord,yCord);
+                        addSavedBuilding(market);
+                    }
+                    if (name.equals("[\u001B[36mMine\u001B[0m]")){
+                        mine.setCord(xCord,yCord);
+                        addSavedBuilding(mine);
+                    }
+                    if (name.equals("[\u001B[36mHall\u001B[0m]")){
+                        townHall.setCord(xCord,yCord);
+                        addSavedBuilding(townHall);
+                    }
+                }
+            } catch (Exception exception) {
+
+            }
+            fileReader.close();
+        }
+        catch (Exception exception){
+
+        }
+        try {
+            FileReader fileReader = new FileReader(home + File.separator + "Desktop" + File.separator +
+                    "testGameFolder" + File.separator + "SettlementMoney.txt");
+            Scanner scan = new Scanner(fileReader);
+            int money = scan.nextInt();
+            fileReader.close();
+            setMoneyValue(money);
+        } catch (Exception e) {
+
+        }
 
     }
 }
