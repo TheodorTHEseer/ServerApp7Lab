@@ -4,6 +4,7 @@ import com.company.logs;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -12,7 +13,7 @@ import static com.company.logs.home;
 public class Cat {
     private static final Map <String, String> nameRace = new HashMap<>();
     private static final Map <String, Double> nameParams = new HashMap<>();
-    private static final String [] names = {"Лютик", "Барсик", "Мурка", "Тигра", "Летиция", "Аэлита"};
+    private static final String [] names = {"лютик", "барсик", "мурка", "тигра", "летиция", "аэлита"};
     private static final double [] params = {1.2, 2.3, 4.3, 1.7, 2.3, 3.3};
     private static void load(){
         nameRace.put(names[0], "Abyssinian");
@@ -41,19 +42,20 @@ public class Cat {
     }
 
     public Cat (String name){
-        try {
             load();
-            this.name=name;
-            this.race = nameRace.get(name);
-            this.weight = nameParams.get(name);
-        }
-        catch (Exception e){
-            System.out.println("Кошка не найдена");
-        }
+            name.toLowerCase(Locale.ROOT);
+            try {
+                this.name=name;
+                this.race = nameRace.get(name);
+                this.weight = nameParams.get(name);
+            }
+            catch (Exception e){
+                System.out.println("Кошки нет" + e.getMessage());
+            }
     }
 
     public String toString() {
-        return "name," + name + ",race,'" + race +
+        return "name," + name + ",race," + race +
                 ",weight," +weight;
     }
     public void fromString(String catString){

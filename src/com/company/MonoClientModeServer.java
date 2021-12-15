@@ -21,17 +21,8 @@ public class MonoClientModeServer implements Runnable{
             // канал записи в сокет следует инициализировать сначала канал чтения для избежания блокировки выполнения программы на ожидании заголовка в сокете
             try (DataOutputStream out = new DataOutputStream(clientDialog.getOutputStream())) {
 
-// канал чтения из сокета
                 DataInputStream in = new DataInputStream(clientDialog.getInputStream());
-                System.out.println("Канал входа готов.");
-                System.out.println("Канал выхода готов.");
                 logs.add("Server|DataRead|Done");
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                // основная рабочая часть //
-                //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                // начинаем диалог с подключенным клиентом в цикле, пока сокет не
-                // закрыт клиентом
                 while (!clientDialog.isClosed()) {
                     System.out.println("Server reading from channel");
 
@@ -44,7 +35,7 @@ public class MonoClientModeServer implements Runnable{
 
                     // инициализация проверки условия продолжения работы с клиентом
                     // по этому сокету по кодовому слову - quit в любом регистре
-                    if (entry.equalsIgnoreCase("quit")) {
+                    if (entry.equalsIgnoreCase("!exit")) {
 
                         // если кодовое слово получено то инициализируется закрытие
                         // серверной нити
@@ -58,8 +49,12 @@ public class MonoClientModeServer implements Runnable{
                     // отправляем эхо обратно клиенту
 
                     System.out.println("Server try writing to channel");
+                    System.out.println(entry);
+                    out.writeUTF(entry);
                     Cat cat = new Cat(entry);
-                    out.writeUTF(cat.toString());
+                    System.out.println(cat.toString());
+                    String exitMs = cat.toString();
+                    out.writeUTF(exitMs);
                     System.out.println("Server Wrote message to clientDialog.");
 
                     // освобождаем буфер сетевых сообщений

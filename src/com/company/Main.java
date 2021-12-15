@@ -1,9 +1,6 @@
 package com.company;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
@@ -19,8 +16,6 @@ public class Main {
         logs.start();
         startDisplay();
         startServer();
-
-
     }
 
     private static void startDisplay(){
@@ -52,15 +47,16 @@ public class Main {
                 // были
                 if (br.ready()) {
                     System.out.println("Server: ");
-                    // если команда - quit то инициализируем закрытие сервера и
+                    // если команда - !exit то инициализируем закрытие сервера и
                     // выход из цикла раздачии нитей монопоточных серверов
                     String serverCommand = br.readLine();
-                    if (serverCommand.equalsIgnoreCase("quit")) {
+                    if (serverCommand.equalsIgnoreCase("!exit")) {
                         System.out.println("Main Server initiate exiting...");
                         server.close();
                         logs.add("Сервер заверишл работу!");
                         break;
                     }
+
                 }
 
                 // если комманд от сервера нет то становимся в ожидание
