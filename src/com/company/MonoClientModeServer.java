@@ -36,9 +36,21 @@ public class MonoClientModeServer implements Runnable{
                         user.setName(entry);
                         out.writeUTF("Done");
                     }
-                    out.writeUTF("...");
                     String entry = in.readUTF();
                     String [] com = String.valueOf(entry).split(" ");
+                    if (com[0].equalsIgnoreCase("/cat")) {
+                        Cat cat = new Cat(com[1]);
+                        String exitMs = cat.toString();
+                        System.out.println(exitMs);
+                        out.writeUTF(exitMs);
+                    }
+                    out.writeUTF("Waiting for u... \n" +
+                            "[/cat (name)]\n" +
+                            "[/all (message)]\n" +
+                            "[/direct (id & message)]\n" +
+                            "[/exit]\n" +
+                            "ur id: " + user.getId());
+
 
                     if (com[0].equalsIgnoreCase("/all")) {
                         String entryM="";
@@ -46,15 +58,17 @@ public class MonoClientModeServer implements Runnable{
                             entryM+=com[count]+" ";
                         }
                         System.out.println(user.getName() + ": " + entryM);
-                        mBuffer.add(mBuffer.size(), user.getName() + ": " + entryM);
+                        mBuffer.add(mBuffer.size(), user.getName() +", "+user.getId()+ ": " + entryM);
                     }
 
                     if (com[0].equalsIgnoreCase("/direct")){
-                        out.writeUTF("Кому хотите отправить сообщение [id]?");
-                        int id = Integer.parseInt(in.readUTF());
-                        out.writeUTF("Кому хотите отправить сообщение [id]?");
-                        String message = in.readUTF();
-                        direct.put(id,user.getName()+": (direct) "+ message);
+                        String entryM="";
+                        int id;
+                        id = Integer.parseInt(com[1]);
+                        for (int count=2; count<com.length;count++){
+                            entryM+=com[count]+" ";
+                        }
+                        direct.put(id,user.getName() +", "+user.getId()+": (direct) "+ entryM);
                     }
 
                     if (mBuffer.size()>0) {
@@ -75,13 +89,7 @@ public class MonoClientModeServer implements Runnable{
                         Thread.sleep(6000);
                         break;
                     }
-                    if (com[0].equalsIgnoreCase("/cat")) {
-                        Cat cat = new Cat(entry);
-                        out.writeUTF("Название>>");
-                        String exitMs = cat.toString();
-                        System.out.println(exitMs);
-                        out.writeUTF(exitMs);
-                    }
+
 
                     // освобождаем буфер сетевых сообщений
                     out.flush();
