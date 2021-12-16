@@ -13,13 +13,28 @@ import java.util.Scanner;
 import static com.company.logs.home;
 
 public class User {
+    public int getId() {
+        return id;
+    }
+
     private int id;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     private String name;
     private int accessLvl;
     private ArrayList<String> MessageBuffer = new ArrayList<>();
     public int MsCount = MessageBuffer.size();
     static public Map<Integer, String> UserDB = new HashMap<>();
-    public User (){}
+    public User (){
+        this.name = "Start";
+    }
     public User(String name) {
         this.name = name;
         this.id = UserDB.size();
@@ -63,5 +78,7 @@ public class User {
                 logs.add("User|download|Fail: " + exception.getMessage());
             }
         }
+        public static ArrayList <String> mBuffer = new ArrayList<>(100);
+        public static Map <Integer, String> direct = new HashMap<>(100);
     }
 }
