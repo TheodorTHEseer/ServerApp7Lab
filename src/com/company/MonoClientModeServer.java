@@ -42,7 +42,7 @@ public class MonoClientModeServer implements Runnable{
                         Cat cat = new Cat(com[1]);
                         String exitMs = cat.toString();
                         System.out.println(exitMs);
-                        out.writeUTF(exitMs);
+                        out.writeUTF("/cat "+exitMs);
                     }
                     out.writeUTF("Waiting for u... \n" +
                             "[/cat (name)]\n" +
@@ -69,6 +69,14 @@ public class MonoClientModeServer implements Runnable{
                             entryM+=com[count]+" ";
                         }
                         direct.put(id,user.getName() +", "+user.getId()+": (direct) "+ entryM);
+                    }
+                    if (com[0].equalsIgnoreCase("//cat")){
+                        int id;
+                        id = Integer.parseInt(com[1]);
+                        Cat cat = new Cat(com[2]);
+                        String exitMs = cat.toString();
+                        System.out.println(exitMs);
+                        direct.put(id,"//cat "+user.getName() +", "+user.getId()+": (direct cat) "+ exitMs);
                     }
 
                     if (mBuffer.size()>0) {
